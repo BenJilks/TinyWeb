@@ -2,5 +2,13 @@
   <header>
     <title>Hash It</title>
   </header>
+  <body>
+    <text>Enter password</text>
+    <input type="password" id="password" value="Password123" onKeyUp="hash()" />
+    <text>Salt: </text>
+    <input id="salt" value="" onKeyUp="hash()" />
+    <button onclick="hash()">Hash!</button>
+    <p id="out" style="color:red"></p>
+  </body>
 </html>
 

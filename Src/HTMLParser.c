@@ -116,6 +116,7 @@ void ParseInnerHTML(char* html, unsigned int* pos, HTMLNode* parent)
 			}
 			
 			ParseInnerHTML(html, pos, node);
+			(*pos)++; // Skip the '/'
 			
 			/* On tag ended */
 			SKIP_WHITE_SPACE(html, pos);

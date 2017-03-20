@@ -17,7 +17,7 @@ typedef struct HTMLNode
 	unsigned int m_attribute_size;
 	
 	/* Inner HTML data */
-	char m_inner_html[80];
+	char m_inner_html[1028 * 4];
 	unsigned int m_inner_html_size;
 	
 	/* Tree data */
