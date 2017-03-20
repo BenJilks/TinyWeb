@@ -11,7 +11,7 @@ typedef struct CSSElement
 /* Struct storing a CSS quary */
 typedef struct CSSQuary
 {
-	char m_quary;
+	char m_quary[80];
 	struct CSSQuary* m_parent;
 	struct CSSQuary* m_children;
 	unsigned int m_child_size;

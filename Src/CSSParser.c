@@ -1,4 +1,6 @@
-#include "CSSParser.h"
+#include "TinyWeb/CSSParser.h"
+#include <stdlib.h>
+#include <memory.h>
 
 /* Creates a new CSS element */
 CSSElement CreateElement(char name[80], char value[80])
@@ -10,10 +12,10 @@ CSSElement CreateElement(char name[80], char value[80])
 }
 
 /* Creates a new CSS quary */
-CSSQuary* CreateQuary(char quary[80], CSSQuary* parent)
+CSSQuary* CreateQuary(char quary_str[80], CSSQuary* parent)
 {
 	CSSQuary* quary = (CSSQuary*)malloc(sizeof(CSSQuary));
-	memcpy(quary->m_quary, quary, strlen(quary) + 1);
+	memcpy(quary->m_quary, quary_str, strlen(quary_str) + 1);
 	quary->m_element_size = 0;
 	quary->m_child_size = 0;
 	quary->m_parent = parent;
@@ -58,7 +60,7 @@ CSSQuary* ParseQuary(char* css, unsigned int* pos, CSSQuary* parent)
 }
 
 /* Parses CSS code into a list of quarys */
-CSSStyleSheet ParseCSS(char* css)
+CSSQuary* ParseCSS(char* css)
 {
 	
 }
