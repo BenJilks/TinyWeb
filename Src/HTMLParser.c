@@ -3,9 +3,9 @@
 #include <memory.h>
 
 /* Creates an HTML attribute */
-HTMLAtrribute CreateAttribute(char name[80], char value[80])
+HTMLAttribute CreateAttribute(char name[80], char value[80])
 {
-	HTMLAtrribute attribute;
+	HTMLAttribute attribute;
 	memcpy(attribute.m_name, name, strlen(name) + 1);
 	memcpy(attribute.m_value, value, strlen(value) + 1);
 	return attribute;
@@ -79,7 +79,7 @@ void ParseAttributes(char* html, unsigned int* pos, HTMLNode* node)
 		value[i++] = c;
 	value[i] = '\0';
 	
-	HTMLAtrribute attribute = CreateAttribute(name, value);
+	HTMLAttribute attribute = CreateAttribute(name, value);
 	node->m_attributes[node->m_attribute_size++] = attribute;
 	ParseAttributes(html, pos, node);
 }
@@ -141,4 +141,15 @@ HTMLNode* ParseHTML(char* html)
 	
 	ParseInnerHTML(html, &pos, document);
 	return document;
+}
+
+/* Gets an attribute by its name */
+HTMLAttribute GetAttributeById(HTMLNode* node, char name[80])
+{
+	unsigned int i;
+	for (i = 0; i < node->m_attribute_size; i++)
+		if (!strcmp(node->m_attributes[i].m_name, name))
+			return node->m_attributes[i];
+	
+	return CreateAttribute(name, "");
 }
