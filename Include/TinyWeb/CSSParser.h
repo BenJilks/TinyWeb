@@ -13,7 +13,7 @@ typedef struct CSSQuary
 {
 	char m_quary[80];
 	struct CSSQuary* m_parent;
-	struct CSSQuary* m_children;
+	struct CSSQuary* m_children[80];
 	unsigned int m_child_size;
 	
 	CSSElement m_elements[80];
