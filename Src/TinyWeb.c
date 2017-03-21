@@ -9,6 +9,7 @@ int main()
 {
 	/* Start the graphics engine */
 	InitGraphics();
+	DrawBox(CreateSimpleBounds(0, 0, 100, 100), (int[3]){0, 255, 0});
 	ClearDisplay();
 	
 	/* Get the html data */

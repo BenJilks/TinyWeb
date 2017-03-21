@@ -1,6 +1,8 @@
 #ifndef GRAPHICS
 #define GRAPHICS
 
+#include "Layout.h"
+
 /* Inits the graphics engine */
 void InitGraphics();
 
@@ -15,5 +17,16 @@ int ShouldClose();
 
 /* Destroys the graphics engine */
 void DestroyGraphics();
+
+/* Drawing functions */
+
+/* Draws a solid colour box to the screen */
+void DrawBox(Bounds bounds, int colour[3]);
+
+/* Draws a textured box to the screen */
+void DrawTexturedBox(Bounds bounds);
+
+/* Draws text to the screen */
+void DrawText(Bounds bounds, char text[80]);
 
 #endif

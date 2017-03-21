@@ -12,6 +12,9 @@ SDL_Window* window;
 SDL_GLContext gl_context;
 int should_close;
 
+/* The window's outer bounds */
+Bounds window_bounds;
+
 /* Inits the graphics engine */
 void InitGraphics()
 {
@@ -22,6 +25,7 @@ void InitGraphics()
 	window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, 
 		SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
 	should_close = 0;
+	window_bounds = CreateSimpleBounds(0, 0, WIDTH, HEIGHT);
 	
 	/* Error checking */
 	if (window == NULL)
@@ -36,7 +40,7 @@ void InitGraphics()
 	
 	gladLoadGL();
 	glClearColor(0, 0, 0, 1);
-	SDL_GL_SetSwapInterval(1);
+	SDL_GL_SetSwapInterval(0);
 }
 
 /* Updates the grapics engine's display */
@@ -59,8 +63,8 @@ void UpdateGraphics()
 /* Clears the graphics display to black */
 void ClearDisplay()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
 	SDL_GL_SwapWindow(window);
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 /* Returns if the browser should be closed */
@@ -80,5 +84,19 @@ void DestroyGraphics()
 	
 	/* Destroy SDL */
 	SDL_Quit();
+}
+
+/* Draws a solid colour box to the screen */
+void DrawBox(Bounds bounds, int colour[3])
+{
+	Bounds glbounds = ToOpenGL(bounds, window_bounds);
+
+	glBegin(GL_QUADS);
+	glColor3f(colour[0]/255.0f, colour[1]/255.0f, colour[2]/255.0f);
+	glVertex2f(glbounds.m_x, glbounds.m_y);
+	glVertex2f(glbounds.m_x + glbounds.m_width, glbounds.m_y);
+	glVertex2f(glbounds.m_x + glbounds.m_width, glbounds.m_y - glbounds.m_height);
+	glVertex2f(glbounds.m_x, glbounds.m_y - glbounds.m_height);
+	glEnd();
 }
 
