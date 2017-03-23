@@ -11,6 +11,7 @@
 SDL_Window* window;
 SDL_GLContext gl_context;
 int should_close;
+int has_resized;
 
 /* The window's outer bounds */
 Bounds window_bounds;
@@ -23,7 +24,7 @@ void InitGraphics()
 	
 	/* Create window */
 	window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, 
-		SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
+		SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	should_close = 0;
 	window_bounds = CreateSimpleBounds(0, 0, WIDTH, HEIGHT);
 	
@@ -46,6 +47,8 @@ void InitGraphics()
 /* Updates the grapics engine's display */
 void UpdateGraphics()
 {
+	has_resized = 0;
+
 	/* Poll input events */
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
@@ -56,6 +59,24 @@ void UpdateGraphics()
 			case SDL_QUIT:
 				should_close = 1;
 				break;
+			
+			/* When the window has been resized */
+			case SDL_WINDOWEVENT:
+			{
+				switch (event.window.event)	
+				{
+					case SDL_WINDOWEVENT_RESIZED:
+					{
+						int w, h;
+						SDL_GetWindowSize(window, &w, &h);
+						
+						window_bounds = CreateSimpleBounds(0, 0, w, h);
+						glViewport(0, 0, w, h);
+						has_resized = 1;
+						break;
+					}
+				}
+			}
 		}	
 	}
 }
@@ -71,6 +92,18 @@ void ClearDisplay()
 int ShouldClose()
 {
 	return should_close;
+}
+
+/* Returns if the window has just been resized */
+int HasResized()
+{
+	return has_resized;
+}
+
+/* Returns the window's layout bounds */
+Bounds GetWindowBounds()
+{
+	return window_bounds;
 }
 
 /* Destroys the graphics engine */

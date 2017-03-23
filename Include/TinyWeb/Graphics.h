@@ -15,6 +15,12 @@ void ClearDisplay();
 /* Returns if the browser should be closed */
 int ShouldClose();
 
+/* Returns if the window has just been resized */
+int HasResized();
+
+/* Returns the window's layout bounds */
+Bounds GetWindowBounds();
+
 /* Destroys the graphics engine */
 void DestroyGraphics();
 
@@ -30,3 +36,4 @@ void DrawTexturedBox(Bounds bounds);
 void DrawText(Bounds bounds, char text[80]);
 
 #endif
+
