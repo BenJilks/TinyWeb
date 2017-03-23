@@ -38,7 +38,7 @@ int main()
 			srand(0);
 			for (i = 0; i < 50; i++)
 			{
-				LayoutNode* node = CreateLayoutNode(CreateSimpleBounds(0, 0, 50, 50), layout_tree);
+				LayoutNode* node = CreateLayoutNode(CreateSimpleBounds(0, 0, rand() % 50, rand() % 50), layout_tree);
 				AddNode(layout_tree, node);
 				DrawBox(node->m_layout_bounds, (int[3]){rand() % 255, rand() % 255, rand() % 255});
 			}

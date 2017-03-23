@@ -27,7 +27,7 @@ void AddNode(LayoutNode* parent, LayoutNode* node)
 	if (parent->m_curr_x + node->m_layout_bounds.m_width >= parent->m_layout_bounds.m_width)
 	{
 		parent->m_curr_x = 0;
-		parent->m_curr_y += node->m_layout_bounds.m_height;
+		parent->m_curr_y = parent->m_max_y;
 	}
 	
 	node->m_layout_bounds.m_x = parent->m_curr_x;
