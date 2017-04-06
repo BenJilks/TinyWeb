@@ -1,0 +1,3 @@
+all:
+	gcc Src/*.c -IInclude -lSDL2 -lGL -lX11 undefined reference to symbol 'dlclose@@GLIBC_2.2.5' -o TinyWeb
+
