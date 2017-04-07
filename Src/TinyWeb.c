@@ -18,6 +18,7 @@ int main()
 	char* html = ReadFile("test.html");
 	HTMLNode* document = ParseHTML(html);
 	
+	ClearDisplay();
 	RenderHTML(document, NULL);
 	ClearDisplay();
 	

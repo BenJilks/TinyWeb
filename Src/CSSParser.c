@@ -79,3 +79,39 @@ CSSQuary* ParseCSS(char* css)
 	ParseQuary(css, &pos, quary);
 	return quary;
 }
+
+#define COLOUR(r, g, b, a) (int[4]){r, g, b, a}
+
+/* Reads a colour from a CSS style sheet */
+#define READCOLOUR(value, colour) \
+{ \
+	if (!strcmp(value, "white")) memcpy(colour, COLOUR(255, 255, 255, 255), 4*sizeof(int)); \
+	else if (!strcmp(value, "black")) memcpy(colour, COLOUR(0, 0, 0, 255), 4*sizeof(int)); \
+	else if (!strcmp(value, "red")) memcpy(colour, COLOUR(255, 0, 0, 255), 4*sizeof(int)); \
+	else memcpy(colour, COLOUR(0, 0, 0, 0), 4*sizeof(int)); \
+}
+
+/* Creates a new style from a CSS quary */
+Style CreateStyle(CSSQuary* quary)
+{
+	Style style;
+
+	/* Set default colours */
+	memcpy(style.m_colour, COLOUR(0, 0, 0, 255), 4*sizeof(int));
+	memcpy(style.m_background_colour, COLOUR(255, 255, 255, 0), 4*sizeof(int));
+	style.m_font_size = 12;
+	
+	/* Read data */
+	unsigned int i;
+	for (i = 0; i < quary->m_element_size; i++)
+	{
+		CSSElement element = quary->m_elements[i];
+		if (!strcmp(element.m_name, "color")) READCOLOUR(element.m_value, style.m_colour)
+		else if (!strcmp(element.m_name, "bakcground-color")) READCOLOUR(element.m_value, style.m_background_colour)
+		else if (!strcmp(element.m_name, "font-size")) style.m_font_size = atof(element.m_value);
+	}
+	return style;
+}
+
+
+

@@ -1,10 +1,11 @@
 #include "TinyWeb/HTML5.h"
+#include "TinyWeb/CSSParser.h"
 #include "TinyWeb/Graphics.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <memory.h>
 
-#define TEXT_SIZE 20
+#define TEXT_SIZE 12
 
 Font font;
 void InitFonts()
@@ -18,21 +19,53 @@ void InitFonts()
 void ProccessText(HTMLNode* node, LayoutNode* layout)
 {
 	printf("Displaying text '%s'\n", node->m_inner_html);
+	HTMLAttribute style_attr = GetAttributeById(node, "style");
 	
-	Bounds bounds = CreateSimpleBounds(0, 0, strlen(node->m_inner_html) * TEXT_SIZE, TEXT_SIZE);
+	CSSQuary* css = ParseCSS(style_attr.m_value);
+	Style style = CreateStyle(css);
+	
+	Bounds bounds = CreateSimpleBounds(0, 0, strlen(node->m_inner_html) * style.m_font_size, style.m_font_size);
 	LayoutNode* layout_node = CreateLayoutNode(bounds, layout);
 	AddNode(layout, layout_node);
 	
 	Bounds text_bounds = layout_node->m_layout_bounds;
-	text_bounds.m_width = TEXT_SIZE;
-	DrawText(text_bounds, font, node->m_inner_html);
-	//DrawBox(layout_node->m_layout_bounds, (int[5]){rand() % 255, rand() % 255, rand() % 255});
+	text_bounds.m_width = style.m_font_size;
+	DrawText(text_bounds, font, node->m_inner_html, style.m_colour);
 }
 
 /* Proccess a button HTML tag */
 void ProccessButton(HTMLNode* node, LayoutNode* layout)
 {
 	printf("Displaying button '%s'\n", node->m_inner_html);
+	
+	HTMLAttribute style_attr = GetAttributeById(node, "style");
+	
+	CSSQuary* css = ParseCSS(style_attr.m_value);
+	Style style = CreateStyle(css);
+	
+	Bounds bounds = CreateSimpleBounds(0, 0, (strlen(node->m_inner_html) * style.m_font_size) + 10, style.m_font_size + 10);
+	LayoutNode* layout_node = CreateLayoutNode(bounds, layout);
+	AddNode(layout, layout_node);
+	
+	Bounds text_bounds = layout_node->m_layout_bounds;
+	text_bounds.m_x += 5; text_bounds.m_y += 5;
+	text_bounds.m_width = style.m_font_size;
+	text_bounds.m_height = style.m_font_size;
+	
+	DrawBox(layout_node->m_layout_bounds, (int[3]){200, 200, 200});
+	DrawText(text_bounds, font, node->m_inner_html, style.m_colour);
+}
+
+/* Proccess an input tag */
+void ProccessInput(HTMLNode* node, LayoutNode* layout)
+{
+	printf("Displaying input tag\n");
+	
+	Bounds bounds = CreateSimpleBounds(0, 0, 200, 20);
+	LayoutNode* layout_node = CreateLayoutNode(bounds, layout);
+	AddNode(layout, layout_node);
+	
+	DrawBox(layout_node->m_layout_bounds, (int[3]){200, 200, 200});
 }
 
 /* Proccess a title HTML tag */
@@ -58,6 +91,8 @@ void RenderHTML(HTMLNode* head, LayoutNode* layout)
 		ProccessTitle(head);
 	else if (!strcmp(head->m_tag_name, "button"))
 		ProccessButton(head, layout);
+	else if (!strcmp(head->m_tag_name, "input"))
+		ProccessInput(head, layout);
 	
 	/* Proccess all it's children */
 	unsigned int i;

@@ -50,10 +50,10 @@ void DrawBox(Bounds bounds, int colour[3]);
 void DrawTexturedBox(Bounds bounds, unsigned int texture_id);
 
 /* Draws a charictor to the screen */
-void DrawChar(Bounds bounds, Font font, char c);
+void DrawChar(Bounds bounds, Font font, char c, int colour[3]);
 
 /* Draws text to the screen */
-void DrawText(Bounds bounds, Font font, char text[80]);
+void DrawText(Bounds bounds, Font font, char text[80], int colour[3]);
 
 #endif
 

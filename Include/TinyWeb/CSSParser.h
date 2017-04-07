@@ -29,4 +29,17 @@ CSSQuary* CreateQuary(char quary[80], CSSQuary* parent);
 /* Parses CSS code into a list of quarys */
 CSSQuary* ParseCSS(char* css);
 
+typedef struct Style
+{
+	/* Store colour attributes */
+	int m_colour[4];
+	int m_background_colour[4];
+	
+	/* Font data */
+	float m_font_size;
+} Style;
+
+/* Creates a new style from a CSS quary */
+Style CreateStyle(CSSQuary* quary);
+
 #endif

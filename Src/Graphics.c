@@ -63,13 +63,13 @@ void InitGraphics()
 	SDL_GL_MakeCurrent(window, gl_context);
 	
 	gladLoadGL();
-	glClearColor(0, 0, 0, 1);
 	SDL_GL_SetSwapInterval(0);
 	texture_size = 0;
 	
 	glEnable(GL_TEXTURE_2D);
 	glEnable (GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glClearColor(1, 1, 1, 1);
 }
 
 /* Loads a new texture */
@@ -131,7 +131,9 @@ void UpdateGraphics()
 /* Clears the graphics display to black */
 void ClearDisplay()
 {
+	glClearColor(1, 1, 1, 1);
 	SDL_GL_SwapWindow(window);
+	
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 
@@ -197,7 +199,7 @@ void DrawTexturedBox(Bounds bounds, unsigned int texture_id)
 }
 
 /* Draws a charictor to the screen */
-void DrawChar(Bounds bounds, Font font, char c)
+void DrawChar(Bounds bounds, Font font, char c, int colour[3])
 {
 	unsigned int index = strchr(font.m_char_data, c) - font.m_char_data;
 
@@ -207,7 +209,7 @@ void DrawChar(Bounds bounds, Font font, char c)
 
 	Bounds glbounds = ToOpenGL(bounds, window_bounds);
 	glBegin(GL_QUADS);
-	glColor3f(255.0f, 255.0f, 255.0f);
+	glColor3f(colour[0]/255.0f, colour[1]/255.0f, colour[2]/255.0f);
 
 	glTexCoord2f(gl_char_x, gl_char_y);
 	glVertex2f(glbounds.m_x, glbounds.m_y);
@@ -227,13 +229,11 @@ void DrawChar(Bounds bounds, Font font, char c)
 }
 
 /* Draws text to the screen */
-void DrawText(Bounds bounds, Font font, char text[80])
+void DrawText(Bounds bounds, Font font, char text[80], int colour[3])
 {
 	unsigned int length = strlen(text);
 	unsigned int i;
 	for (i = 0; i < length; i++)
-	{
-		DrawChar(CreateSimpleBounds(bounds.m_x + (i * bounds.m_width), bounds.m_y, bounds.m_width, bounds.m_height), font, text[i]);
-	}
+		DrawChar(CreateSimpleBounds(bounds.m_x + (i * bounds.m_width), bounds.m_y, bounds.m_width, bounds.m_height), font, text[i], colour);
 }
 
